@@ -1,11 +1,11 @@
 % layout 'default';
-% title 'AproJo - Accounts, Projects and Jobs';
+% title 'Cpancover - wraps cpancover.com';
 			
 <!-- MAIN -->											
 
 <div class="container">
     <div class="lead">
-        <%= l 'The universal Time Tracking Tool by Fixpunkt' %>
+        <%= l 'A Wrapper of cpancover.com' %>
     </div>
 
 

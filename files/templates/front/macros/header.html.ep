@@ -29,10 +29,10 @@
     <!-- LOGO ROW -->    
     <div class="row">
         <div class="span4">
-            <a href="/"><img src="/skins/<%= $skin %>/img/aprojo-logo-98px.png" alt="Logo" ></a>
+            <a href="/"><img src="/skins/<%= $skin %>/img/logo-98px.png" alt="Logo" ></a>
         </div>
         <div class="span2">
-            <span class="info"><b>AproJo - DEV</b></span>
+            <span class="info"><b>Cpancover - DEV</b></span>
         </div> 
     </div><!-- END LOGO ROW -->
  

@@ -3,9 +3,9 @@ use warnings;
 
 use lib qw( ../lib );
 
-use AproJo;
-use AproJo::DB::Schema;
-use AproJo::Command::setup;
+use Cpancover;
+use Cpancover::DB::Schema;
+use Cpancover::Command::setup;
 
 use Mojo::JSON qw(decode_json encode_json);
 
@@ -14,9 +14,9 @@ END { done_testing(); }
 
 use Test::Mojo;
 
-my $db = AproJo::DB::Schema->connect('dbi:SQLite:dbname=:memory:');
+my $db = Cpancover::DB::Schema->connect('dbi:SQLite:dbname=:memory:');
 
-AproJo::Command::setup->inject_sample_data('admin', 'pass', 'Joe Admin', $db);
+Cpancover::Command::setup->inject_sample_data('admin', 'pass', 'Joe Admin', $db);
 
 ok($db->resultset('User')->single({name => 'admin'}), 'DB user exists');
 
@@ -47,7 +47,7 @@ while (my $adminrole = $adminroles->next) {
 }
 
 
-my $t = Test::Mojo->new(AproJo->new(db => $db));
+my $t = Test::Mojo->new(Cpancover->new(db => $db));
 $t->ua->max_redirects(2);
 
 subtest 'Static File' => sub {
@@ -59,7 +59,7 @@ subtest 'Static File' => sub {
 subtest 'Anonymous User' => sub {
 
   # landing page
-  $t->get_ok('/')->status_is(200)->text_is(h2 => 'Testpage for AproJo')
+  $t->get_ok('/')->status_is(200)->text_is(h2 => 'Testpage for Cpancover')
     ->element_exists('a');
 
   # attempt to get non-existant page
@@ -105,7 +105,7 @@ subtest 'Edit Page' => sub {
   # page editor
   $t->get_ok('/edit/home')
     ->status_is(200)
-    ->text_like( '#wmd-input' => qr/Welcome to AproJo!/ )
+    ->text_like( '#wmd-input' => qr/Welcome to Cpancover!/ )
     ->element_exists( '#wmd-preview' );
 
   # save page
@@ -148,7 +148,7 @@ subtest 'Edit Page' => sub {
 };
 
 subtest 'Edit Main Navigation Menu' => sub {
-  my $title = 'About AproJo';
+  my $title = 'About Cpancover';
 
   # check about page is in nav 
   $t->get_ok('/admin/menu')
