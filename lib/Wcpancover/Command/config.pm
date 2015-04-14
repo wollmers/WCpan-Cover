@@ -1,4 +1,4 @@
-package WCpan::Cover::Command::config;
+package Wcpancover::Command::config;
 use Mojo::Base 'Mojolicious::Command';
 
 use Data::Dumper;

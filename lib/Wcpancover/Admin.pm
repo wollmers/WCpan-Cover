@@ -1,4 +1,4 @@
-package WCpan::Cover::Admin;
+package Wcpancover::Admin;
 use Mojo::Base 'Mojolicious::Controller';
 
 use Data::Dumper;

@@ -12,6 +12,10 @@ __PACKAGE__->add_columns(
   {data_type => 'integer', is_auto_increment => 1, is_nullable => 0},
   'name',
   {data_type => 'varchar', default_value => '', is_nullable => 0, size => 255},
+  'author',
+  {data_type => 'varchar', default_value => '', is_nullable => 0, size => 255},
+  'version',
+  {data_type => 'varchar', default_value => '', is_nullable => 0, size => 32},
 );
 
 __PACKAGE__->set_primary_key('package_id');
