@@ -48,38 +48,31 @@ my @db_connect = ref $db_connect ? @$db_connect : ($db_connect);
 my $schema = $schema_class->connect(@db_connect)
   or die "Could not connect to $schema_class using $db_connect[0]";
 
-open (my $fh, "<:encoding(UTF-8)", $COVERFILE, ) or die "couldn't open $COVERFILE, $!";
+use CPAN::Cover::Results;
 
-my $HTML = '';
+my $iterator = CPAN::Cover::Results->new()->release_iterator();
 
 my $found = 0;
-while (my $line = <$fh>) { $HTML .= $line; }
-
-my $dom = Mojo::DOM->new($HTML);
-
-for my $tr ($dom->find('tr')->each) {
+my $missing = 0;
+while (my $release = $iterator->next) {
   $found++;
-  last if ($found > 100);
-  my $tds = $tr->children('td');
-  my $dist = $tds->to_array->[0]->all_text if $tds->to_array->[0];
-  my $version = $tds->to_array->[1]->text if $tds->to_array->[1];
-  if ($dist && $version) {
-    print STDERR $found,' dist: ', $dist, ' version: ',$version,"\n";
-  }
-  next unless $tds->to_array->[2];
-  my $link = $tds->to_array->[2]->at('a[href]')->to_string;
+  #last if ($found > 5000);
+  my $distname = $release->distname;
+  my $version = $release->version;
+  my $name = $release->distname . '-' . $release->version;
+  my $coverage = $release->total;
   my $author = '?';
-  my $name;
-  if ($link =~ m/href=.+latest\/[A-Z]-[A-Z]{2,2}-([A-Z]+)-(\w[\w-]*)-(v?[0-9.]+)\.tar\.gz--/) {
-    $author = $1;
-    $name = $2 . '-' . $3;
+
+  my $rs = $schema->resultset('Package');
+  my $result =
+    $schema->resultset('Package')->single({name => $name});
+  if (!$result) {
+    print 'author not found for package ',$name,"\n";
+    $missing++;
   }
-  if (!$name && $dist && $version) {
-    $name = $dist . '-' . $version;
-  }
-  my $coverage = $tds->last->text;
-  if ($name && $author && $coverage) {
-    print STDERR 'name: ', $name, ' author: ',$author, ' coverage: ',$coverage,"\n";
+  if ($result) {
+  $author = $result->author;
+    #print STDERR 'name: ', $name, ' author: ',$author, ' coverage: ',$coverage,"\n";
     entry({
       author => $author,
       name   => $name,
@@ -88,24 +81,8 @@ for my $tr ($dom->find('tr')->each) {
   }
 }
 
-if (0) {
-while (my $line=<$fh>) {
-  last if ($found > 10);
-  chomp $line;
-  # <a href="http://cpancover.com/latest/R-RO-ROCKY-B-CodeLines-1.1.tar.gz--1410321948.278751.out.gz">
-  # href="../authors/id/P/PB/PBLAIR/ACL-Regex-0.0002.tar.gz">ACL-Regex-0.0002.tar.gz</a>
-  if ($line =~ m/href=.+latest\/[A-Z]-[A-Z]{2,2}-([A-Z]+)-(\w[\w-]*)-(v?[0-9.]+)\.tar\.gz--/) {
-    my $author = $1;
-    my $name = $2 . '-' . $3;
-    print STDERR 'name: ', $name, ' author: ',$author, "\n";
-    $found++;
-    entry({
-      author => $author,
-      name   => $name,
-    }) if (1);
-  }
-}
-}
+print STDERR
+'found: ',$found,' missing: ',$missing,"\n";
 
 if (0) {
 my $rs = $schema->resultset('Cover');
