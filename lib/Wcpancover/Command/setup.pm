@@ -22,12 +22,21 @@ sub inject_sample_data {
   $schema->deploy({ add_drop_table => 1});
 
   my $samples = [
-    {author => 'WOLLMERS', name => 'AproJo', version => '0.014'},
-    {author => 'WOLLMERS', name => 'Text-Undiacritic', version => '0.07'},
+    {author => 'WOLLMERS', name => 'AproJo-0.014'},
+    {author => 'WOLLMERS', name => 'Text-Undiacritic-0.07'},
+  ];
+
+  my $samples1 = [
+    {author => 'WOLLMERS', cname => 'AproJo-0.014'},
+    {author => 'WOLLMERS', cname => 'Text-Undiacritic-0.07'},
   ];
 
   for my $sample (@$samples) {
     $schema->resultset('Package')->create($sample);
+  }
+
+  for my $sample (@$samples) {
+    $schema->resultset('Cover')->create($sample);
   }
 
   return $schema;

@@ -3,14 +3,17 @@
 use strict;
 use warnings;
 
-
 use lib qw(../lib);
+
+use Mojo::Dom;
 
 my $job_entries = {};
 
-my $CPANFILE = './cpanfile.txt';
+#my $COVERFILE = './coverfile.txt';
+my $COVERFILE = './A.html';
 
-my $PIDFILE = 'cpanfile.pid';
+
+my $PIDFILE = 'coverfile.pid';
 
 my $url = 'http://www.cpan.org/modules/01modules.index.html';
 
@@ -20,7 +23,7 @@ create_pid($PIDFILE);
 
 #remove_file($CPANFILE);
 
-#fetch_file($url, $CPANFILE);
+#fetch_file($url, $COVERFILE);
 
 my $config = {
   'db_connect' => [
@@ -45,14 +48,53 @@ my @db_connect = ref $db_connect ? @$db_connect : ($db_connect);
 my $schema = $schema_class->connect(@db_connect)
   or die "Could not connect to $schema_class using $db_connect[0]";
 
-open (my $fh, '<', $CPANFILE) or die "couldn't open $CPANFILE, $@";
+open (my $fh, "<:encoding(UTF-8)", $COVERFILE, ) or die "couldn't open $COVERFILE, $!";
+
+my $HTML = '';
 
 my $found = 0;
+while (my $line = <$fh>) { $HTML .= $line; }
+
+my $dom = Mojo::DOM->new($HTML);
+
+for my $tr ($dom->find('tr')->each) {
+  $found++;
+  last if ($found > 100);
+  my $tds = $tr->children('td');
+  my $dist = $tds->to_array->[0]->all_text if $tds->to_array->[0];
+  my $version = $tds->to_array->[1]->text if $tds->to_array->[1];
+  if ($dist && $version) {
+    print STDERR $found,' dist: ', $dist, ' version: ',$version,"\n";
+  }
+  next unless $tds->to_array->[2];
+  my $link = $tds->to_array->[2]->at('a[href]')->to_string;
+  my $author = '?';
+  my $name;
+  if ($link =~ m/href=.+latest\/[A-Z]-[A-Z]{2,2}-([A-Z]+)-(\w[\w-]*)-(v?[0-9.]+)\.tar\.gz--/) {
+    $author = $1;
+    $name = $2 . '-' . $3;
+  }
+  if (!$name && $dist && $version) {
+    $name = $dist . '-' . $version;
+  }
+  my $coverage = $tds->last->text;
+  if ($name && $author && $coverage) {
+    print STDERR 'name: ', $name, ' author: ',$author, ' coverage: ',$coverage,"\n";
+    entry({
+      author => $author,
+      name   => $name,
+      coverage => $coverage,
+    }) if (1);
+  }
+}
+
+if (0) {
 while (my $line=<$fh>) {
-  last if ($found > 5000);
+  last if ($found > 10);
   chomp $line;
+  # <a href="http://cpancover.com/latest/R-RO-ROCKY-B-CodeLines-1.1.tar.gz--1410321948.278751.out.gz">
   # href="../authors/id/P/PB/PBLAIR/ACL-Regex-0.0002.tar.gz">ACL-Regex-0.0002.tar.gz</a>
-  if ($line =~ m/href=.+\/([^\/]+)\/[^\/]+>(\w[\w-]*)-(v?[0-9.]+)\.tar\.gz</) {
+  if ($line =~ m/href=.+latest\/[A-Z]-[A-Z]{2,2}-([A-Z]+)-(\w[\w-]*)-(v?[0-9.]+)\.tar\.gz--/) {
     my $author = $1;
     my $name = $2 . '-' . $3;
     print STDERR 'name: ', $name, ' author: ',$author, "\n";
@@ -60,14 +102,15 @@ while (my $line=<$fh>) {
     entry({
       author => $author,
       name   => $name,
-    });
+    }) if (1);
   }
+}
 }
 
 if (0) {
-my $rs = $schema->resultset('Package');
+my $rs = $schema->resultset('Cover');
 my $result =
-  $schema->resultset('Package')->search(undef, {order_by => {-asc => 'name'}});
+  $schema->resultset('Cover')->search(undef, {order_by => {-asc => 'name'}});
 
 
 while (my $record = $result->next) {
@@ -89,7 +132,7 @@ sub entry {
   if (exists $entry->{name}) {
     $entries->{$entry->{name}}++;
 
-    my $rs = $schema->resultset('Package');
+    my $rs = $schema->resultset('Cover');
     $rs->update_or_create($entry,{ key => 'name_UNIQUE' });
   }
 }
@@ -138,12 +181,12 @@ sub remove_pid {
 }
 
 sub remove_file {
-  my $xmlfile = shift;
-  print STDERR "Remove cpanfile (" . $xmlfile . ")", "\n";
-  unless (-f $xmlfile) {
+  my $file = shift;
+  print STDERR "Remove file (" . $file . ")", "\n";
+  unless (-f $file) {
     return;
   }
-  unlink($xmlfile) or die "unable to delete $xmlfile: $!";
+  unlink($file) or die "unable to delete $file: $!";
 }
 
 sub fetch_file {

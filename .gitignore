@@ -31,4 +31,9 @@ MYMETA.*
 /.prove
 
 01modules.index.html
+/script/*.html
+/script/*.json
+/script/*.txt
+/script/*_files
+
 
