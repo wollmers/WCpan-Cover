@@ -21,6 +21,9 @@ requires 'File::Spec::Functions', '0';
 requires 'Getopt::Long', '0';
 requires 'Encode', '0';
 
+requires 'CPAN::ReleaseHistory', '0.10';
+requires 'CPAN::Cover::Results', '0';
+
 # requires 'Some::Module', 'VERSION';
 
 on test => sub {

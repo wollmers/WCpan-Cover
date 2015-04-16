@@ -13,6 +13,9 @@ Per Distribution
 http://cpancover.com/latest/AproJo-0.011/index.html
 http://cpancover.com/latest//Set-Similarity-0.023/cover.json
 
+All Distributions:
+http://cpancover.com/staging/cpancover.json
+
 CPAN
 - latest
 http://www.cpan.org/modules/01modules.index.html
@@ -22,3 +25,7 @@ http://www.cpan.org/authors/00whois.html
 http://www.cpan.org/authors/id/W/WO/WOLLMERS/
 
 CPAN::Common::Index
+CPAN::DistnameInfo
+CPAN::Cover::Results
+CPAN::ReleaseHistory
+CPAN::Releases::Latest

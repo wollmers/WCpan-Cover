@@ -48,21 +48,25 @@ my $schema = $schema_class->connect(@db_connect)
 open (my $fh, '<', $CPANFILE) or die "couldn't open $CPANFILE, $@";
 
 my $found = 0;
-while (my $line=<$fh>) {
-  last if ($found > 5000);
-  chomp $line;
-  # href="../authors/id/P/PB/PBLAIR/ACL-Regex-0.0002.tar.gz">ACL-Regex-0.0002.tar.gz</a>
-  if ($line =~ m/href=.+\/([^\/]+)\/[^\/]+>(\w[\w-]*)-(v?[0-9.]+)\.tar\.gz</) {
-    my $author = $1;
-    my $name = $2 . '-' . $3;
-    print STDERR 'name: ', $name, ' author: ',$author, "\n";
-    $found++;
-    entry({
-      author => $author,
-      name   => $name,
-    });
-  }
+
+use CPAN::ReleaseHistory 0.10;
+my $history  = CPAN::ReleaseHistory->new();
+my $iterator = $history->release_iterator();
+while (my $release = $iterator->next_release) {
+  #last if ($found > 5000);
+  $found++;
+  my $name = $release->distinfo->distvname;
+  my $author = $release->distinfo->cpanid;
+  my $date   = $release->date;
+
+  entry({
+    author => $author,
+    name   => $name,
+    date   => $date,
+  });
 }
+
+print STDERR 'records processed: ',$found,"\n";
 
 if (0) {
 my $rs = $schema->resultset('Package');
@@ -80,9 +84,6 @@ while (my $record = $result->next) {
 
 remove_pid($PIDFILE);
 
-
-
-
 sub entry {
   my ($entry) = @_;
 
@@ -93,8 +94,6 @@ sub entry {
     $rs->update_or_create($entry,{ key => 'name_UNIQUE' });
   }
 }
-
-
 
 sub create_pid {
   my $pidfile = shift;
