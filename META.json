@@ -54,6 +54,7 @@
             "Mojolicious::Plugin::I18N" : "0",
             "Mojolicious::Plugin::ServerInfo" : "0",
             "SQL::Translator" : "0",
+            "String::Similarity" : "0",
             "Term::Prompt" : "0",
             "perl" : "5.010001"
          }
@@ -65,7 +66,7 @@
          }
       }
    },
-   "release_status" : "testing",
+   "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
          "web" : "https://github.com/wollmers/Wcpancover/issues"
@@ -77,7 +78,7 @@
          "web" : "https://github.com/wollmers/Wcpancover"
       }
    },
-   "version" : "0.02",
+   "version" : "0.01",
    "x_contributors" : [
       "Helmut Wollmersdorfer <helmut.wollmersdorfer@fixpunkt.de>",
       "Helmut Wollmersdorfer <helmut@wollmersdorfer.at>"
