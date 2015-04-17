@@ -46,7 +46,7 @@ my $found = 0;
 my $missing = 0;
 while (my $release = $iterator->next) {
   $found++;
-  #last if ($found > 5000);
+  #last if ($found > 500);
   my $distname = $release->distname;
   my $version = $release->version;
   my $name = $release->distname . '-' . $release->version;
@@ -92,6 +92,8 @@ while (my $release = $iterator->next) {
       author => $author,
       name   => $name,
       coverage => $coverage,
+      dist   => $distname,
+      version => $version,
   }) if (1);
 }
 

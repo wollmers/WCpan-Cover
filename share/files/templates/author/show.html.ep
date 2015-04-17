@@ -19,7 +19,8 @@
           %= tag td => $record->$col
       % }
       %= tag td => begin
-        %= tag a => href => "/admin/change/$author" =>  'edit' 
+        % my $name = $record->name;
+        %= tag a => href => "http://cpancover.com/latest/$name/index.html" =>  'details' 
       %= end
     %= end
   % }

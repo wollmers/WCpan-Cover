@@ -29,3 +29,8 @@ CPAN::DistnameInfo
 CPAN::Cover::Results
 CPAN::ReleaseHistory
 CPAN::Releases::Latest
+
+ALTER TABLE mytable ADD COLUMN mycolumn character varying(50) NOT NULL DEFAULT 'foo';
+
+ALTER TABLE covers ADD COLUMN dist character varying(255) NOT NULL DEFAULT '';
+ALTER TABLE covers ADD COLUMN version character varying(25) NOT NULL DEFAULT '';
