@@ -23,6 +23,7 @@ requires 'Encode', '0';
 
 requires 'CPAN::ReleaseHistory', '0.10';
 requires 'CPAN::Cover::Results', '0';
+requires 'String::Similarity', '0';
 
 # requires 'Some::Module', 'VERSION';
 

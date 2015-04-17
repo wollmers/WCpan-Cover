@@ -53,15 +53,19 @@ use CPAN::ReleaseHistory 0.10;
 my $history  = CPAN::ReleaseHistory->new();
 my $iterator = $history->release_iterator();
 while (my $release = $iterator->next_release) {
-  #last if ($found > 5000);
+  #last if ($found > 500);
   $found++;
   my $name = $release->distinfo->distvname;
+  my $dist = $release->distinfo->dist;
+  my $version = $release->distinfo->version // '';
   my $author = $release->distinfo->cpanid;
   my $date   = $release->date;
 
   entry({
     author => $author,
     name   => $name,
+    dist   => $dist,
+    version  => $version . '',
     date   => $date,
   });
 }

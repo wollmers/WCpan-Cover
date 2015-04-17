@@ -4,26 +4,15 @@ use strict;
 use warnings;
 
 use lib qw(../lib);
-
-use Mojo::Dom;
-
-my $job_entries = {};
-
-#my $COVERFILE = './coverfile.txt';
-my $COVERFILE = './A.html';
-
+use Data::Dumper;
 
 my $PIDFILE = 'coverfile.pid';
-
-my $url = 'http://www.cpan.org/modules/01modules.index.html';
+my $development = 1;
+my $debug = 1;
 
 my $entries = {};
 
-create_pid($PIDFILE);
-
-#remove_file($CPANFILE);
-
-#fetch_file($url, $COVERFILE);
+create_pid($PIDFILE) unless $development;
 
 my $config = {
   'db_connect' => [
@@ -49,6 +38,7 @@ my $schema = $schema_class->connect(@db_connect)
   or die "Could not connect to $schema_class using $db_connect[0]";
 
 use CPAN::Cover::Results;
+use String::Similarity;
 
 my $iterator = CPAN::Cover::Results->new()->release_iterator();
 
@@ -63,22 +53,46 @@ while (my $release = $iterator->next) {
   my $coverage = $release->total;
   my $author = '?';
 
+  if (0) {
+    next if ($distname !~ m/^AproJo/);
+    print STDERR 'distname: ', $distname, ' name: ', $name, ' author: ',$author, ' coverage: ',$coverage,"\n";
+  }
+
+
+  if (0) {
+    if ($version =~ m/-/) {
+      print STDERR 'distname: ', $distname,
+      	' version: ', $version,
+      	' name: ', $name,
+      	' author: ',$author,
+      	' coverage: ',$coverage,"\n" if $debug;
+      	next;
+    }
+  }
+
+
   my $rs = $schema->resultset('Package');
   my $result =
     $schema->resultset('Package')->single({name => $name});
   if (!$result) {
-    print 'author not found for package ',$name,"\n";
+    #print STDERR 'author not found for package ',$name,' trying distname ',$distname,"\n";
+    my $maybe = most_similar($distname,$name,$schema);
+    #print STDERR 'found a maybe package ',$maybe,"\n";
+    if ($maybe) {
+      $author = $schema->resultset('Package')->search( { name => { -like => $maybe . '%' }})->first->author()
+      || '?';
+    }
     $missing++;
   }
   if ($result) {
-  $author = $result->author;
-    #print STDERR 'name: ', $name, ' author: ',$author, ' coverage: ',$coverage,"\n";
-    entry({
+    $author = $result->author;
+  }
+  #print STDERR 'name: ', $name, ' author: ',$author, ' coverage: ',$coverage,"\n";
+  entry({
       author => $author,
       name   => $name,
       coverage => $coverage,
-    }) if (1);
-  }
+  }) if (1);
 }
 
 print STDERR
@@ -98,9 +112,37 @@ while (my $record = $result->next) {
 
 }
 
-remove_pid($PIDFILE);
+remove_pid($PIDFILE) unless $development;
 
+sub most_similar {
+  my ($query,$name1, $schema) = @_;
 
+  my $rs = $schema->resultset('Package');
+  my $result =
+    $schema->resultset('Package')->search( { name => { -like => $query . '%' }});
+
+  if (!$result) {
+    $query =~ s/(-[vV]?\d[\d._]*).*$/$1/;
+    $result =
+      $schema->resultset('Package')->search( { name => { -like => $query . '%' }});
+
+    return '' unless ($result);
+  }
+
+  my $similars = {};
+
+  while (my $record = $result->next) {
+    my $name2 = $record->name;
+
+    $name2 =~ s/-TRIAL//;
+
+    my $similarity = similarity($name1, $name2);
+    $similars->{$name2} = $similarity;
+  }
+  my @keys = sort { $similars->{$b} <=> $similars->{$a} } keys(%$similars);
+  #print STDERR 'similars: ',Dumper($similars) if $debug;
+  return $keys[0];
+}
 
 
 sub entry {

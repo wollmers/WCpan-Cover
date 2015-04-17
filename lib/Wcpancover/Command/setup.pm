@@ -32,11 +32,11 @@ sub inject_sample_data {
   ];
 
   for my $sample (@$samples) {
-    $schema->resultset('Package')->create($sample);
+    #$schema->resultset('Package')->create($sample);
   }
 
   for my $sample (@$samples) {
-    $schema->resultset('Cover')->create($sample);
+    #$schema->resultset('Cover')->create($sample);
   }
 
   return $schema;
