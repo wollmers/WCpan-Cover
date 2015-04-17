@@ -17,7 +17,9 @@ sub run {
 
 sub inject_sample_data {
   my $self = shift;
-  my $schema = eval { $_[-1]->isa('Wcpancover::DB::Schema') } ? pop() : $self->app->schema;
+  my $schema = eval { $_[0]->isa('Wcpancover::DB::Schema') } ? shift() : $self->app->schema;
+
+  my $test = shift;
 
   $schema->deploy({ add_drop_table => 1});
 
@@ -27,16 +29,18 @@ sub inject_sample_data {
   ];
 
   my $samples1 = [
-    {author => 'WOLLMERS', cname => 'AproJo-0.014'},
-    {author => 'WOLLMERS', cname => 'Text-Undiacritic-0.07'},
+    {author => 'WOLLMERS', name => 'AproJo-0.014'},
+    {author => 'WOLLMERS', name => 'Text-Undiacritic-0.07'},
   ];
 
-  for my $sample (@$samples) {
-    #$schema->resultset('Package')->create($sample);
-  }
+  if ($test) {
+    for my $sample (@$samples) {
+      $schema->resultset('Package')->create($sample);
+    }
 
-  for my $sample (@$samples) {
-    #$schema->resultset('Cover')->create($sample);
+    for my $sample (@$samples) {
+      $schema->resultset('Cover')->create($sample);
+    }
   }
 
   return $schema;

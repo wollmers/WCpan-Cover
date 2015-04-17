@@ -16,9 +16,11 @@ use Test::Mojo;
 
 my $db = Wcpancover::DB::Schema->connect('dbi:SQLite:dbname=:memory:');
 
-Wcpancover::Command::setup->inject_sample_data($db);
+ok($db, 'DB schema connected');
 
-ok($db->resultset('Package')->single({name => 'AproJo'}), 'DB package exists');
+Wcpancover::Command::setup->inject_sample_data($db,'test');
+
+ok($db->resultset('Package')->search( { name => { -like => 'AproJo' . '%' }}), 'DB package exists');
 
 
 
