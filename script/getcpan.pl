@@ -3,12 +3,7 @@
 use strict;
 use warnings;
 
-
 use lib qw(../lib);
-
-my $job_entries = {};
-
-my $CPANFILE = './cpanfile.txt';
 
 my $PIDFILE = 'cpanfile.pid';
 
@@ -17,10 +12,6 @@ my $url = 'http://www.cpan.org/modules/01modules.index.html';
 my $entries = {};
 
 create_pid($PIDFILE);
-
-#remove_file($CPANFILE);
-
-#fetch_file($url, $CPANFILE);
 
 my $config = {
   'db_connect' => [
@@ -45,15 +36,13 @@ my @db_connect = ref $db_connect ? @$db_connect : ($db_connect);
 my $schema = $schema_class->connect(@db_connect)
   or die "Could not connect to $schema_class using $db_connect[0]";
 
-open (my $fh, '<', $CPANFILE) or die "couldn't open $CPANFILE, $@";
-
 my $found = 0;
 
 use CPAN::ReleaseHistory 0.10;
 my $history  = CPAN::ReleaseHistory->new();
 my $iterator = $history->release_iterator();
 while (my $release = $iterator->next_release) {
-  #last if ($found > 500);
+  #last if ($found > 50);
   $found++;
   my $name = $release->distinfo->distvname;
   my $dist = $release->distinfo->dist;
