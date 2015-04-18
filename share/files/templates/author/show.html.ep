@@ -4,7 +4,7 @@
 <h1>Coverage for author <%= uc $author %></h1> 
 
 % my $schema = schema;
-% my $result = schema->resultset('Cover')->search_like( { author => $author . '%'}, {order_by => { -asc => [qw('name')] }});
+% my $result = schema->resultset('Cover')->search( { author => { -like => $author . '%'}}, {order_by => { -asc => [qw('name')] }});
 % my $columns = [ qw(name author coverage) ];
 %= tag table => class => "table table-striped table-bordered table-condensed" => begin
   %= tag tr => begin

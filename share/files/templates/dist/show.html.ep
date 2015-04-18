@@ -2,7 +2,7 @@
 % title 'Coverage for $name';
 
 % my $schema = schema;
-% my $result = schema->resultset('Cover')->search_like( { name => $name . "%"}, {order_by => { -asc => 'name' }});
+% my $result = schema->resultset('Cover')->search( { name => { -like => $name . "%"}}, {order_by => { -asc => 'name' }});
 % my $columns = [ qw(name author coverage) ];
 %= tag table => class => "table table-striped table-bordered table-condensed" => begin
   %= tag tr => begin

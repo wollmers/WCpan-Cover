@@ -37,3 +37,9 @@ If PerlIO::gzip fails to install:
 OR
 
   apt-get install libperlio-gzip-perl
+  
+HELPFUL
+
+  apt-get install sqlite
+  
+  
