@@ -3,7 +3,6 @@
 Wcpancover - Web-Interface to cpancover.com
 
 <div>
-
     <a href="https://travis-ci.org/wollmers/Wcpancover"><img src="https://travis-ci.org/wollmers/Wcpancover.png" alt="Wcpancover" /></a>
     <a href='https://coveralls.io/r/wollmers/Wcpancover?branch=master'><img src='https://coveralls.io/repos/wollmers/Wcpancover/badge.png?branch=master' alt='Coverage Status' /></a>
     <a href='http://cpants.cpanauthors.org/dist/Wcpancover'><img src='http://cpants.cpanauthors.org/dist/Wcpancover.png' alt='Kwalitee Score' /></a>
@@ -98,7 +97,6 @@ Logging in [WCpanCover](https://metacpan.org/pod/WCpanCover) is the same as in [
 Helmut Wollmersdorfer, <helmut.wollmersdorfer@gmail.com>
 
 <div>
-
     <a href='http://cpants.cpanauthors.org/author/wollmers'><img src='http://cpants.cpanauthors.org/author/wollmers.png' alt='Kwalitee Score' /></a>
 </div>
 
