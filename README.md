@@ -4,12 +4,11 @@ Wcpancover - Web-Interface to cpancover.com
 
 <div>
 
+    <a href="https://travis-ci.org/wollmers/Wcpancover"><img src="https://travis-ci.org/wollmers/Wcpancover.png" alt="Wcpancover" /></a>
+    <a href='https://coveralls.io/r/wollmers/Wcpancover?branch=master'><img src='https://coveralls.io/repos/wollmers/Wcpancover/badge.png?branch=master' alt='Coverage Status' /></a>
+    <a href='http://cpants.cpanauthors.org/dist/Wcpancover'><img src='http://cpants.cpanauthors.org/dist/Wcpancover.png' alt='Kwalitee Score' /></a>
+    <a href="http://badge.fury.io/pl/Wcpancover"><img src="https://badge.fury.io/pl/Wcpancover.svg" alt="latest CPAN version" height="18"></a>
 </div>
-
-<a href="https://travis-ci.org/wollmers/Wcpancover"><img src="https://travis-ci.org/wollmers/Wcpancover.png" alt="Wcpancover" /></a>
-<a href='https://coveralls.io/r/wollmers/Wcpancover?branch=master'><img src='https://coveralls.io/repos/wollmers/Wcpancover/badge.png?branch=master' alt='Coverage Status' /></a>
-<a href='http://cpants.cpanauthors.org/dist/Wcpancover'><img src='http://cpants.cpanauthors.org/dist/Wcpancover.png' alt='Kwalitee Score' /></a>
-<a href="http://badge.fury.io/pl/Wcpancover"><img src="https://badge.fury.io/pl/Wcpancover.svg" alt="latest CPAN version" height="18"></a>
 
 # SYNOPSIS
 
