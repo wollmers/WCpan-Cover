@@ -11,7 +11,7 @@ http://cpancover.com/latest/W-WO-WOLLMERS-Set-Similarity-0.021.tar.gz--141285906
 
 Per Distribution
 http://cpancover.com/latest/AproJo-0.011/index.html
-http://cpancover.com/latest//Set-Similarity-0.023/cover.json
+http://cpancover.com/latest/Set-Similarity-0.023/cover.json
 
 All Distributions:
 http://cpancover.com/staging/cpancover.json

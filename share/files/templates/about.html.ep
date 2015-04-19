@@ -1,0 +1,13 @@
+% layout 'default';
+% title 'About cpancover';
+
+<h2>Links</h2>
+
+<p><a href="http://cpancover.com/">cpancover.com</a> coverage date of all distributions on CPAN</p>
+
+<p><a href="https://metacpan.org/pod/Devel::Cover">Devel::Cover</a> the modules generating the coverage measures</p>
+<p><a href="https://metacpan.org/pod/Devel::Cover">Devel::Cover</a> on GitHub</p>
+
+<p><a href="https://metacpan.org/pod/Wcpancover">Wcpancover</a> generates this website</p>
+<p><a href="https://github.com/wollmers/Wcpancover">Wcpancover</a> on GitHub</a>
+

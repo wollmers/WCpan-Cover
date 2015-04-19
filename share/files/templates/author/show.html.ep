@@ -11,6 +11,7 @@
     % for my $header (@$columns) {
         %= tag th =>  $header
     % }
+    %= tag th =>  'score'
     %= tag th =>  'action' 
   %= end
   % while (my $record = $result->next) {
@@ -18,6 +19,12 @@
       % for my $col (@$columns) {
           %= tag td => $record->$col
       % }
+      % my $coverage = sprintf("%.2f",$record->coverage);
+      % my $notcovered = sprintf("%.2f",100 - $coverage);
+      <td><div class="progress" title="Coverage">
+            <div class="progress-bar progress-bar-success" style="width: <%= $coverage %>%"></div>
+            <div class="progress-bar progress-bar-warning" style="width: <%= $notcovered %>3%"></div>
+        </div></td>
       %= tag td => begin
         % my $name = $record->name;
         %= tag a => href => "http://cpancover.com/latest/$name/index.html" =>  'details' 

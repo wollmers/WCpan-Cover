@@ -7,11 +7,12 @@ use Data::Dumper;
 
 use File::Basename 'dirname';
 use File::Spec::Functions qw(catdir splitdir);
+use Cwd;
 
 BEGIN{
   $ENV{MOJO_MODE} ||= 'development';
   #  $ENV{MOJO_MODE} = 'production';
-  $ENV{MOJO_HOME} ||= '/var/www/Wcpancover';
+  $ENV{MOJO_HOME} ||= '/Users/helmut/github/Wcpancover';
 }
 
 # Source directory has precedence
