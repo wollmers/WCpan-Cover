@@ -9,6 +9,15 @@ sub index {
   $self->render();
 }
 
+
+sub query {
+  my $self = shift;
+  my $dist = $self->param('dist');
+
+  $self->redirect_to("/dist/$dist");
+}
+
+
 sub show {
   my $self = shift;
 

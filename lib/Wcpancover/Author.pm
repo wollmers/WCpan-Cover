@@ -9,6 +9,13 @@ sub index {
   $self->render();
 }
 
+sub query {
+  my $self = shift;
+  my $author = $self->param('author');
+
+  $self->redirect_to("/author/$author");
+}
+
 sub show {
   my $self = shift;
 

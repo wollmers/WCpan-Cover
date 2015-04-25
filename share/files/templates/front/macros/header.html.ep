@@ -24,8 +24,8 @@
                 <!-- Collect the nav links, forms, and other content for toggling -->
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="nav navbar-nav">
-                        <li class="active"><a href="/dist/">Distributions</a></li>
-                        <li><a href="/auth/">Authors</a></li>
+                        <li><a href="/dists/">Distributions</a></li>
+                        <li><a href="/authors/">Authors</a></li>
                         <li><a href="/about">About</a></li>
                     </ul>
                 </div>
