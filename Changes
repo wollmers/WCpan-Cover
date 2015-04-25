@@ -2,6 +2,9 @@ Revision history for Wcpancover.
 
 {{$NEXT}}
 
+0.05  2015-04-25 12:10:56 CEST
+       - improve travis config
+
 0.04  2015-04-25 11:53:14 CEST
        - added query forms
 
